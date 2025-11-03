@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 
 public class PainterController {
     // intance variables for managing Painter state
@@ -68,27 +69,36 @@ public class PainterController {
     
     @FXML
     void clearButtonPressed(ActionEvent event) {
-
+        drawingAreaPane.getChildren().clear();
     }
 
     @FXML
     void colorRadioButtonSelected(ActionEvent event) {
-
+        brushColor = (Paint) colorToggleGroup.getSelectedToggle().getUserData();
     }
 
     @FXML
     void drawingAreaMouseDragged(MouseEvent event) {
-
+        Circle circle = new Circle();
+        circle.setRadius(radius.getRadius());
+        circle.setFill(brushColor);
+        circle.setLayoutX(event.getX());
+        circle.setLayoutY(event.getY());
+        drawingAreaPane.getChildren().addAll(circle);
     }
 
     @FXML
     void sizeRadioButtonSelected(ActionEvent event) {
-
+        radius = (PenSize) sizeToggleGroup.getSelectedToggle().getUserData();
     }
 
     @FXML
     void undoButtonPressed(ActionEvent event) {
-
+        int count = drawingAreaPane.getChildren().size();
+        
+        if (count > 0) {
+            drawingAreaPane.getChildren().remove(count - 1);
+        }
     }
 
     private enum PenSize {
